@@ -32,3 +32,5 @@ gcc -Wall -Wextra -Werror main_bonus.c get_next_line_bonus.c  get_ext_line_utils
 gcc -Wall -Wextra -Werror main_bonus.c get_next_line_bonus.c get_ext_line_utils_bonus.c -D BUFFER_SIZE=xx
 
 Also, if you compile with the main_bonus.c get_next_line.c get_next_line_utils.c file, you can see that the file descriptors are not taken into account.
+
+![pic-1](https://i.gyazo.com/b13c8f5260b92ccfc6867a4ce282cc38.png)
