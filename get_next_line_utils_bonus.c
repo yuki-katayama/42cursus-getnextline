@@ -5,31 +5,31 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kyuki <kyuki@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/28 01:58:29 by kyuki             #+#    #+#             */
-/*   Updated: 2020/11/28 01:58:29 by kyuki            ###   ########.fr       */
+/*   Created: 2020/11/17 20:54:51 by kyuki             #+#    #+#             */
+/*   Updated: 2021/04/05 18:29:15 by kyuki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 
-char		*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char		*str;
-	size_t		i;
-	size_t		length;
+	char	*str;
+	size_t	i;
+	size_t	length;
 
 	if (!s)
 		return (NULL);
 	length = ft_strlen(s);
 	if (start >= length)
 	{
-		if (!(str = malloc(sizeof(char) * 1)))
+		if (!(ft_malloc_p((void **)&str, sizeof(char) * 1)))
 			return (NULL);
 		*str = '\0';
 		return (str);
 	}
 	i = 0;
-	if (!(str = malloc(sizeof(char) * len + 1)))
+	if (!(ft_malloc_p((void **)&str, sizeof(char) * len + 1)))
 		return (NULL);
 	while (i < len)
 	{
@@ -40,7 +40,7 @@ char		*ft_substr(char const *s, unsigned int start, size_t len)
 	return (str);
 }
 
-char		*ft_strchr(const char *s, int c)
+char	*ft_strchr(const char *s, int c)
 {
 	size_t		length;
 	size_t		i;
@@ -58,18 +58,19 @@ char		*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char		*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	size_t		length;
-	size_t		i;
-	char		*dest;
+	size_t	length;
+	size_t	i;
+	char	*dest;
 
 	i = 0;
+	dest = NULL;
 	if (!s1 || !s2)
 		return (NULL);
 	length = ft_strlen(s1);
 	length += ft_strlen(s2);
-	if (!(dest = malloc(sizeof(char *) * (length))))
+	if (!(ft_malloc_p((void **)&dest, sizeof(char) * length + 1)))
 		return (NULL);
 	while (s1[i] != '\0')
 	{
@@ -85,7 +86,7 @@ char		*ft_strjoin(char const *s1, char const *s2)
 	return (dest);
 }
 
-char		*ft_strdup(char *src)
+char	*ft_strdup(char *src)
 {
 	char	*dest;
 	int		size;
@@ -94,7 +95,7 @@ char		*ft_strdup(char *src)
 	size = 0;
 	while (src[size])
 		size++;
-	if (!(dest = malloc(sizeof(char) * size + 1)))
+	if (!(ft_malloc_p((void **)&dest, sizeof(char) * size + 1)))
 		return (NULL);
 	i = 0;
 	while (src[i])
@@ -106,7 +107,7 @@ char		*ft_strdup(char *src)
 	return (dest);
 }
 
-size_t		ft_strlen(const char *s)
+size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 

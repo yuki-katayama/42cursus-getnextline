@@ -6,19 +6,30 @@
 /*   By: kyuki <kyuki@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 01:57:15 by kyuki             #+#    #+#             */
-/*   Updated: 2020/12/06 21:43:01 by kyuki            ###   ########.fr       */
+/*   Updated: 2021/04/06 10:06:19 by kyuki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-static void			save_line_free(char **save)
+int	ft_malloc_p(void **p, size_t len)
 {
-	free(*save);
-	*save = NULL;
+	*p = malloc(len);
+	if (*p == NULL)
+		return (0);
+	return (1);
 }
 
-static int			appendline_freesave(char **save, char **line)
+static void	update_save(char **save, char *buf)
+{
+	char	*tmp;
+
+	tmp = ft_strjoin(*save, buf);
+	free(*save);
+	*save = tmp;
+}
+
+static int	appendline_freesave(char **save, char **line)
 {
 	int		len;
 	char	*tmp;
@@ -36,13 +47,14 @@ static int			appendline_freesave(char **save, char **line)
 	else
 	{
 		*line = ft_strdup(*save);
-		save_line_free(save);
+		free(*save);
+		*save = NULL;
 		return (READ_EOF);
 	}
 	return (READ);
 }
 
-static int			output(char **save, char **line, int ret, int fd)
+static int	output(char **save, char **line, int ret, int fd)
 {
 	if (ret < 0)
 		return (-1);
@@ -51,40 +63,37 @@ static int			output(char **save, char **line, int ret, int fd)
 		if (save[fd] != NULL)
 		{
 			*line = ft_strdup(save[fd]);
-			save_line_free(&save[fd]);
+			free(save[fd]);
+			save[fd] = NULL;
 		}
 		else
-		{
 			*line = ft_strdup("");
-		}
 		return (READ_EOF);
 	}
 	else
-	{
 		return (appendline_freesave(&save[fd], line));
-	}
 }
 
-int					get_next_line(const int fd, char **line)
+int	get_next_line(const int fd, char **line)
 {
 	int				ret;
 	static char		*save[FOPEN_MAX];
 	char			buf[BUFFER_SIZE + 1];
-	char			*tmp;
 
 	if (fd < 0)
 		return (READ_ERROR);
-	while ((ret = read(fd, buf, BUFFER_SIZE)) > 0)
+	ret = 1;
+	while (ret > 0)
 	{
-		buf[ret] = '\0';
+		ret = read(fd, buf, BUFFER_SIZE);
+		if (ret >= 0)
+			buf[ret] = '\0';
+		if (ret <= 0)
+			break ;
 		if (save[fd] == NULL)
 			save[fd] = ft_strdup(buf);
 		else
-		{
-			tmp = ft_strjoin(save[fd], buf);
-			free(save[fd]);
-			save[fd] = tmp;
-		}
+			update_save(&save[fd], buf);
 		if (ft_strchr(save[fd], '\n'))
 			break ;
 	}

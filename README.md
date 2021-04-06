@@ -1,4 +1,6 @@
 # 42cursus-getnextline
+
+## Norm v3 ver.
 ## 日本語
 ### 概要
 *  メモリーリーク厳禁!!
